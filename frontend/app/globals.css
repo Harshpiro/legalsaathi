@@ -1,0 +1,166 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 226 58% 5%; /* slate-950 */
+    --foreground: 210 40% 98%; /* slate-50 */
+    --card: 222 47% 8%; /* slate-900 */
+    --card-foreground: 210 40% 98%;
+    --muted: 217 33% 17%; /* slate-800 */
+    --muted-foreground: 215 20% 65%; /* slate-400 */
+    --primary: 38 92% 50%; /* amber-500 */
+    --primary-foreground: 226 58% 5%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 217 33% 17%;
+    --input: 217 33% 17%;
+    --ring: 38 92% 50%;
+    --radius: 0.5rem;
+  }
+
+  * {
+    border-color: hsl(var(--border));
+  }
+  body {
+    background-color: hsl(var(--background));
+    color: hsl(var(--foreground));
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+}
+
+/* ── Mic Button: Pulse Rings ── */
+.mic-pulse-ring {
+  position: absolute;
+  inset: -4px;
+  border-radius: 9999px;
+  border: 2px solid rgb(245 158 11 / 0.4);
+  animation: mic-pulse 2s ease-out infinite;
+  pointer-events: none;
+}
+.mic-pulse-ring-1 { animation-delay: 0s; }
+.mic-pulse-ring-2 { animation-delay: 0.5s; }
+.mic-pulse-ring-3 { animation-delay: 1s; }
+
+@keyframes mic-pulse {
+  0% {
+    transform: scale(1);
+    opacity: 0.6;
+  }
+  100% {
+    transform: scale(1.8);
+    opacity: 0;
+  }
+}
+
+/* ── Mic Button: Waveform Bars ── */
+.mic-waveform-bar {
+  width: 2px;
+  border-radius: 9999px;
+  background-color: rgb(245 158 11);
+  animation: mic-waveform 0.6s ease-in-out infinite alternate;
+}
+.mic-wave-1 { height: 8px; animation-delay: 0s; }
+.mic-wave-2 { height: 14px; animation-delay: 0.1s; }
+.mic-wave-3 { height: 18px; animation-delay: 0.2s; }
+.mic-wave-4 { height: 12px; animation-delay: 0.3s; }
+.mic-wave-5 { height: 6px; animation-delay: 0.4s; }
+
+@keyframes mic-waveform {
+  0% { transform: scaleY(0.4); }
+  100% { transform: scaleY(1); }
+}
+
+/* ── Legal Template Preview / PDF Styling ── */
+.legal-document-shell {
+  width: 100%;
+  overflow-x: auto;
+  border: 1px solid rgb(30 41 59);
+  border-radius: 8px;
+  background:
+    linear-gradient(180deg, rgb(15 23 42 / 0.9), rgb(2 6 23 / 0.95));
+  padding: 24px;
+}
+
+.legal-document-page {
+  width: min(100%, 794px);
+  max-width: 100%;
+  min-height: 1123px;
+  margin: 0 auto;
+  padding: 72px 68px;
+  background: #ffffff;
+  color: #111827;
+  box-shadow: 0 24px 70px rgb(0 0 0 / 0.35);
+  font-family: "Nirmala UI", "Mangal", "Noto Sans Devanagari", Arial, sans-serif;
+  font-size: 15.5px;
+  line-height: 1.62;
+  letter-spacing: 0;
+  box-sizing: border-box;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.legal-document-page h1,
+.legal-document-page h2,
+.legal-document-page h3 {
+  color: #111827;
+  font-family: "Nirmala UI", "Mangal", "Noto Sans Devanagari", Arial, sans-serif;
+  font-weight: 700;
+  line-height: 1.25;
+  letter-spacing: 0;
+}
+
+.legal-document-page h1 {
+  margin: 0 0 28px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid #9ca3af;
+  text-align: center;
+  text-transform: uppercase;
+  font-size: 22px;
+}
+
+.legal-document-page h2 {
+  margin: 24px 0 10px;
+  font-size: 18px;
+}
+
+.legal-document-page h3 {
+  margin: 18px 0 8px;
+  font-size: 16px;
+}
+
+.legal-document-page p {
+  margin: 0 0 13px;
+  color: #111827;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.legal-document-page ol,
+.legal-document-page ul {
+  margin: 0 0 16px 26px;
+  padding: 0;
+  color: #111827;
+}
+
+.legal-document-page li {
+  margin: 0 0 6px;
+  padding-left: 6px;
+}
+
+.legal-document-page strong {
+  font-weight: 700;
+}
+
+@media (max-width: 720px) {
+  .legal-document-shell {
+    padding: 12px;
+  }
+
+  .legal-document-page {
+    min-height: auto;
+    padding: 36px 28px;
+    font-size: 14px;
+  }
+}
