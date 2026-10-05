@@ -1,0 +1,121 @@
+# ============================================================
+# LegalSaathi — Production Docker Compose
+# ============================================================
+# Usage:
+#   docker compose -f docker-compose.prod.yml up -d --build
+#   docker compose -f docker-compose.prod.yml logs -f
+#   docker compose -f docker-compose.prod.yml down
+# ============================================================
+
+services:
+  # ==================== DATABASES ====================
+
+  mongodb:
+    image: mongo:7
+    container_name: legalsaathi_mongo
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:27017:27017"  # Only localhost — Nginx handles external traffic
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD:-StrongMongoPass123!}
+      MONGO_INITDB_DATABASE: legalsaathi
+    volumes:
+      - mongo_data:/data/db
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 20s
+
+  qdrant:
+    image: qdrant/qdrant:latest
+    container_name: legalsaathi_qdrant
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:6333:6333"
+      - "127.0.0.1:6334:6334"
+    volumes:
+      - qdrant_data:/qdrant/storage
+
+  neo4j:
+    image: neo4j:5
+    container_name: legalsaathi_neo4j
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:7474:7474"
+      - "127.0.0.1:7687:7687"
+    environment:
+      NEO4J_AUTH: neo4j/${NEO4J_PASSWORD:-StrongNeo4jPass123!}
+      NEO4JLABS_PLUGINS: '["apoc"]'
+      NEO4J_dbms_security_procedures_unrestricted: 'apoc.*,apoc.meta.*'
+      NEO4J_dbms_security_procedures_allowlist: 'apoc.*,apoc.meta.*'
+      NEO4J_server_memory_heap_initial__size: 256m
+      NEO4J_server_memory_heap_max__size: 512m
+    volumes:
+      - neo4j_data:/data
+      - neo4j_logs:/logs
+    healthcheck:
+      test: ["CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:7474 || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
+
+  # ==================== APPLICATION ====================
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: legalsaathi_backend
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:8000:8000"
+    env_file:
+      - ./backend/.env
+    environment:
+      # Override database URIs to use Docker service names
+      MONGODB_URI: mongodb://admin:${MONGO_PASSWORD:-StrongMongoPass123!}@mongodb:27017
+      QDRANT_URL: http://qdrant:6333
+      NEO4J_URI: bolt://neo4j:7687
+    volumes:
+      - backend_uploads:/app/uploads
+    depends_on:
+      mongodb:
+        condition: service_healthy
+      qdrant:
+        condition: service_started
+      neo4j:
+        condition: service_healthy
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-https://legalsaathi.yourdomain.com/api}
+        NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: ${NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY:-}
+    container_name: legalsaathi_frontend
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:3000:3000"
+    env_file:
+      - ./frontend/.env.local
+    depends_on:
+      - backend
+
+# ==================== VOLUMES ====================
+# Named volumes — data persist across container restarts
+volumes:
+  mongo_data:
+    driver: local
+  qdrant_data:
+    driver: local
+  neo4j_data:
+    driver: local
+  neo4j_logs:
+    driver: local
+  backend_uploads:
+    driver: local

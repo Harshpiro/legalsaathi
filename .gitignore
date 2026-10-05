@@ -1,0 +1,52 @@
+# Env
+.env
+.env.local
+*.env
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+venv/
+.venv/
+env/
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Node
+node_modules/
+.next/
+out/
+dist/
+build/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# Docker volumes
+mongo_data/
+qdrant_data/
+neo4j_data/
+neo4j_logs/
+
+# Locally-uploaded user documents
+backend/uploads/
+
+# Misc
+*.tmp
+*.bak
+.cache/
+backend/
+coverage/
