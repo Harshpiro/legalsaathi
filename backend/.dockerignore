@@ -1,0 +1,33 @@
+# Virtual environment — Docker mein apna alag venv hai
+.venv/
+venv/
+env/
+
+# Python cache
+__pycache__/
+*.py[cod]
+*.pyo
+*.egg-info/
+
+# Environment files — secrets Docker mein env_file se inject honge
+.env
+.env.local
+.env.example
+
+# IDE
+.vscode/
+.idea/
+
+# Uploads — production mein volume mount se aayega
+uploads/
+
+# Tests & cache
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Git
+.git/
+.gitignore
