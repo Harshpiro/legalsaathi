@@ -1,0 +1,29 @@
+# Dependencies — Docker mein fresh install hoga
+node_modules/
+
+# Build output — Docker mein fresh build hoga
+.next/
+out/
+dist/
+build/
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# IDE
+.vscode/
+.idea/
+
+# Logs
+*.log
+npm-debug.log*
+
+# Git
+.git/
+.gitignore
+
+# OS
+.DS_Store
+Thumbs.db

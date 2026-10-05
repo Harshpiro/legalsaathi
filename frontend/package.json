@@ -1,0 +1,41 @@
+{
+  "name": "legalsaathi-frontend",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@clerk/nextjs": "^6.9.6",
+    "@clerk/themes": "^2.4.57",
+    "@radix-ui/react-slot": "^1.1.1",
+    "@types/d3-force": "^3.0.10",
+    "axios": "^1.7.9",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "d3-force": "^3.0.0",
+    "lucide-react": "^0.468.0",
+    "next": "^14.2.25",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-dropzone": "^14.3.5",
+    "react-markdown": "^9.0.1",
+    "reactflow": "^11.11.4",
+    "tailwind-merge": "^2.5.5",
+    "tailwindcss-animate": "^1.0.7"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.2",
+    "@types/react": "^18.3.17",
+    "@types/react-dom": "^18.3.5",
+    "autoprefixer": "^10.4.20",
+    "eslint": "^8.57.1",
+    "eslint-config-next": "^14.2.25",
+    "postcss": "^8.4.49",
+    "tailwindcss": "^3.4.17",
+    "typescript": "^5.7.2"
+  }
+}
